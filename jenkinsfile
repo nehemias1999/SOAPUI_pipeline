@@ -1,0 +1,38 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Run SOAPUI Test') {
+
+            steps {
+
+                script {
+
+                    // Ejecutar el TestCase
+                    def soapuiCommand = """
+                    testrunner.sh -j -f "${WORKSPACE}/results" -RJUnit "${WORKSPACE}/ServicioPrueba.xml"
+                    """
+                    sh soapuiCommand
+
+                }
+
+            }
+
+        }
+
+        stage('Publish Results') {
+
+            steps {
+
+                // Publicar resultados JUnit
+                junit '**/results/*.xml'
+
+            }
+
+        }
+
+    }
+    
+}
