@@ -2,6 +2,10 @@ pipeline {
 
     agent any
 
+    environment {
+        WORKSPACE = "Desktop"
+    }
+
     stages {
 
         stage('Run SOAPUI Test') {
@@ -12,8 +16,9 @@ pipeline {
 
                     // Ejecutar el TestCase
                     def soapuiCommand = """
-                    testrunner.sh -j -f "${WORKSPACE}/results" -RJUnit "${WORKSPACE}/ServicioPrueba.xml"
+                    "C:\\Program Files\\SmartBear\\SoapUI-5.7.2\\bin\\testrunner.bat" -j -f "${WORKSPACE}\\results" -RJUnit "${WORKSPACE}\\ClienteCrear-soapui-project.xml"
                     """
+
                     sh soapuiCommand
 
                 }
@@ -34,5 +39,5 @@ pipeline {
         }
 
     }
-    
+
 }
