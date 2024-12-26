@@ -8,11 +8,11 @@ def convert_to_junit(input_file, output_file):
 
     # Crear el formato JUnit
     testsuite = ET.Element('testsuite')
-    testsuite.attrib['name'] = root.attrib.get('name', 'TestSuite')
+    testsuite.attrib['name'] = root.attrib.get('name', 'name')
     testsuite.attrib['tests'] = root.attrib.get('tests', 'tests')
     testsuite.attrib['failures'] = root.attrib.get('failures', 'failures')
     testsuite.attrib['errors'] = root.attrib.get('errors', 'errors')
-    testsuite.attrib['skipped'] = '0'
+    testsuite.attrib['time'] = root.attrib.get('time', 'time')
 
     for testcase in root.findall('testcase'):
         junit_testcase = ET.SubElement(testsuite, 'testcase')
