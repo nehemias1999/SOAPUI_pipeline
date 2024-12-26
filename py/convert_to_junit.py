@@ -1,5 +1,6 @@
 
 import xml.etree.ElementTree as ET
+import argparse
 
 def convert_to_junit(input_file, output_file):
     tree = ET.parse(input_file)
@@ -29,5 +30,14 @@ def convert_to_junit(input_file, output_file):
     tree = ET.ElementTree(testsuite)
     tree.write(output_file, encoding='utf-8', xml_declaration=True)
 
-# Ejemplo de uso
-convert_to_junit('C:\\ruta\\a\\resultados\\soapui-result.xml', 'C:\\ruta\\a\\resultados\\junit-result.xml')
+if __name__ == "__main__":
+    # Configurar el parser de argumentos
+    parser = argparse.ArgumentParser(description="Convertir reportes de SOAPUI a formato JUnit.")
+    parser.add_argument("input_file", help="Ruta al archivo XML de entrada.")
+    parser.add_argument("output_file", help="Ruta al archivo XML de salida en formato JUnit.")
+
+    # Leer argumentos
+    args = parser.parse_args()
+
+    # Llamar a la función con los argumentos proporcionados
+    convert_to_junit(args.input_file, args.output_file)
