@@ -23,14 +23,12 @@ def convert_to_junit(input_file, output_file):
             "time": testcase.attrib["time"]
         })
 
-        # Si hay fallo, agregar <failure>
-        failure = testcase.find("failure")
-        if failure is not None:
-            junit_failure = ET.SubElement(junit_testcase, "failure", {
-                "type": failure.attrib["type"],
-                "message": failure.attrib["message"]
+        for testcase_state in testcase:
+            testcase_state_copy = ET.SubElement(junit_testcase, testcase_state.tag, {
+                "type": testcase_state.attrib["type"],
+                "message": testcase_state.attrib["message"]
             })
-            junit_failure.text = failure.text
+            testcase_state_copy.text = testcase_state.text
 
     # Guardar el resultado en formato JUnit
     tree = ET.ElementTree(testsuite)
@@ -38,9 +36,9 @@ def convert_to_junit(input_file, output_file):
 
 if __name__ == "__main__":
     # Configurar el parser de argumentos
-    parser = argparse.ArgumentParser(description="Convertir reportes de SOAPUI a formato JUnit.")
-    parser.add_argument("input_file", help="Ruta al archivo XML de entrada.")
-    parser.add_argument("output_file", help="Ruta al archivo XML de salida en formato JUnit.")
+    parser = argparse.ArgumentParser(description="Convertir reportes de SOAPUI en formato XML a formato JUnit.")
+    parser.add_argument("input_file", help="Path al archivo XML de entrada.")
+    parser.add_argument("output_file", help="Path al archivo XML de salida en formato JUnit.")
 
     # Leer argumentos
     args = parser.parse_args()
