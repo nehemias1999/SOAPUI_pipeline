@@ -24,7 +24,7 @@ pipeline {
                     // bat label: 'Conversion a formato JUnit',
                     // script: 'python "convert_to_junit.py" "C:\\Users\\nsalazar\\Desktop\\results\\TEST-TestSuite_1.xml" "C:\\Users\\nsalazar\\Desktop\\results\\junit-result.xml"'
 
-                    sh 'python "convert_to_junit.py" "C:\\Users\\nsalazar\\Desktop\\results\\TEST-TestSuite_1.xml" "C:\\Users\\nsalazar\\Desktop\\results\\junit-result.xml"'
+                    sh 'python convert_to_junit.py "C:\\Users\\nsalazar\\Desktop\\results\\TEST-TestSuite_1.xml" "C:\\Users\\nsalazar\\Desktop\\results\\junit-result.xml"'
 
                 }
 
