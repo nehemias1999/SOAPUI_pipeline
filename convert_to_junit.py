@@ -7,24 +7,30 @@ def convert_to_junit(input_file, output_file):
     root = tree.getroot()
 
     # Crear el formato JUnit
-    testsuite = ET.Element('testsuite')
-    testsuite.attrib['name'] = root.attrib.get('name', 'name')
-    testsuite.attrib['tests'] = root.attrib.get('tests', 'tests')
-    testsuite.attrib['failures'] = root.attrib.get('failures', 'failures')
-    testsuite.attrib['errors'] = root.attrib.get('errors', 'errors')
-    testsuite.attrib['time'] = root.attrib.get('time', 'time')
+    testsuite = ET.Element("testsuite", {
+        "name": root.attrib["name"],
+        "tests": root.attrib["tests"],
+        "failures": root.attrib["failures"],
+        "errors": root.attrib["errors"],
+        "time": root.attrib["time"]
+    })
 
-    for testcase in root.findall('testcase'):
-        junit_testcase = ET.SubElement(testsuite, 'testcase')
-        junit_testcase.attrib['classname'] = testcase.attrib.get('name', 'UnnamedTestCase')
-        junit_testcase.attrib['name'] = testcase.attrib.get('name', 'UnnamedTestStep')
-        junit_testcase.attrib['time'] = testcase.attrib.get('time', '0')
+    for testcase in root.findall("testcase"):
+        # Crear cada <testcase>
+        junit_testcase = ET.SubElement(testsuite, "testcase", {
+            "name": testcase.attrib["name"],
+            "classname": root.attrib["name"],
+            "time": testcase.attrib["time"]
+        })
 
-        # Agregar fallos como <failure>
-        for assertion in testcase.findall(".//assertion[@status='FAILED']"):
-            failure = ET.SubElement(junit_testcase, 'failure')
-            failure.attrib['message'] = assertion.text or 'Assertion failed'
-            failure.text = 'Detalles del fallo'
+        # Si hay fallo, agregar <failure>
+        failure = testcase.find("failure")
+        if failure is not None:
+            junit_failure = ET.SubElement(junit_testcase, "failure", {
+                "type": failure.attrib["type"],
+                "message": failure.attrib["message"]
+            })
+            junit_failure.text = failure.text
 
     # Guardar el resultado en formato JUnit
     tree = ET.ElementTree(testsuite)
